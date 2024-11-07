@@ -20,7 +20,16 @@ def download_and_extract_instantclient():
 
     # Unzip the file
     with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-        zip_ref.extractall("./instantclient")
+        for member in zip_ref.namelist():
+            filename = os.path.basename(member)
+            # Skip directories
+            if not filename:
+                continue
+            # Copy file (taken from zipfile's extract)
+            source = zip_ref.open(member)
+            target = open(os.path.join("./instantclient", filename), "wb")
+            with source, target:
+                target.write(source.read())
 
     # Verify the contents of the directory
     extracted_files = os.listdir('./instantclient')
