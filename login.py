@@ -1,42 +1,34 @@
 import os
-import urllib.request
 import zipfile
+import requests
 import streamlit as st
-import oracledb
 
 def download_and_extract_instantclient():
     url = "https://www.dropbox.com/scl/fi/1s7me50wgi14tso9zmjrz/instantclient_12_1.zip?rlkey=8rmbxrshjn6r44j898c1hiai1&st=sdslt96n&dl=1"
     local_filename = "instantclient_12_1.zip"
 
     # Download the file
-    st.write("Downloading Oracle Instant Client...")
-    urllib.request.urlretrieve(url, local_filename)
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(local_filename, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
 
-    # Check if the file is downloaded correctly
-    if os.path.getsize(local_filename) < 100:  # Adjust the size check as needed
-        st.error("Downloaded file is too small, possibly an error page.")
-        return
+    # Create the directory if it doesn't exist
+    if not os.path.exists("./instantclient"):
+        os.makedirs("./instantclient")
 
     # Unzip the file
-    try:
-        st.write("Extracting Oracle Instant Client...")
-        with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-            zip_ref.extractall("./instantclient")
-    except zipfile.BadZipFile:
-        st.error("The downloaded file is not a valid ZIP file.")
-        return
+    with zipfile.ZipFile(local_filename, 'r') as zip_ref:
+        zip_ref.extractall("./instantclient")
 
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
 
 # Initialize the Oracle Client
-try:
-    oracledb.init_oracle_client(lib_dir='./instantclient')
-except oracledb.DatabaseError as e:
-    st.error(f"Failed to initialize Oracle Client: {e}")
-    st.stop()
+oracledb.init_oracle_client(lib_dir='./instantclient')
 
-# Your existing database connection and login logic
+# Your existing code
 def check_login(username, password):
     try:
         conn = oracledb.connect(user='fasdollar', password='fasdollar', dsn='172.25.1.83:1521/empdb01')
@@ -61,39 +53,3 @@ def check_login(username, password):
         else:
             st.error(f"An error occurred: {error.message}")
         return None
-
-# Initialize session state
-if 'page' not in st.session_state:
-    st.session_state['page'] = 'login'
-
-# Function to handle exit
-def handle_exit():
-    st.session_state.clear()
-    st.session_state['page'] = 'login'
-
-# Login Page
-if st.session_state['page'] == 'login':
-    st.title('Login Page')
-
-    username = st.text_input('Username', key='username').upper()
-    password = st.text_input('Password', type='password', key='password').upper()
-
-    if st.button('OK', key='login_ok_button'):
-        if not username or not password:
-            st.error('Please login first!')
-        else:
-            result = check_login(username, password)
-            if result is None:
-                st.error('Login failed, user name or password not match')
-            else:
-                role_code, user_active, user_code, vc_username = result
-                if user_active == 'N':
-                    st.error('Login failed, user is not active')
-                else:
-                    st.success('Login success')
-                    st.session_state['user_code'] = user_code
-                    st.session_state['vc_username'] = vc_username
-                    st.session_state['page'] = 'jipb'
-
-if st.button('EXIT', key='exit_button'):
-    handle_exit()
