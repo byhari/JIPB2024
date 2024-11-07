@@ -2,13 +2,14 @@ import os
 import urllib.request
 import zipfile
 import streamlit as st
-import oracledb  # Ensure oracledb is imported
+import oracledb
 
 def download_and_extract_instantclient():
     url = "https://www.dropbox.com/scl/fi/8yxm7lqu30zkh3dr9cpxa/instantclient112.zip?rlkey=71pwxm8ng785vlrlfm30ifia4&st=drfoarfd&dl=1"
     local_filename = "instantclient112.zip"
 
     # Download the file
+    st.write("Downloading Oracle Instant Client...")
     urllib.request.urlretrieve(url, local_filename)
 
     # Check if the file is downloaded correctly
@@ -18,11 +19,19 @@ def download_and_extract_instantclient():
 
     # Unzip the file
     try:
+        st.write("Extracting Oracle Instant Client...")
         with zipfile.ZipFile(local_filename, 'r') as zip_ref:
             zip_ref.extractall("./main")
     except zipfile.BadZipFile:
         st.error("The downloaded file is not a valid ZIP file.")
         return
+
+    # Verify the extracted files
+    required_files = ["libclntsh.so", "libocci.so"]
+    for file in required_files:
+        if not os.path.exists(os.path.join("./main", file)):
+            st.error(f"Required file {file} not found in extracted directory.")
+            return
 
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
