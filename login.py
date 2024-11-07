@@ -27,7 +27,7 @@ def download_and_extract_instantclient():
         return
 
     # Verify the extracted files
-    required_files = ["libclntsh.so", "libocci.so"]
+    required_files = ["oci.dll", "oraociei11.dll]
     for file in required_files:
         if not os.path.exists(os.path.join("./main", file)):
             st.error(f"Required file {file} not found in extracted directory.")
