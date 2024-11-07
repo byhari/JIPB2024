@@ -20,13 +20,13 @@ def download_and_extract_instantclient():
 
     # Unzip the file
     with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-        zip_ref.extractall("./instantclient")
+        zip_ref.extractall(".main/instantclient")
 
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
 
 # Initialize the Oracle Client
-oracledb.init_oracle_client(lib_dir='./instantclient')
+oracledb.init_oracle_client(lib_dir='.main/instantclient')
 
 # Your existing code
 def check_login(username, password):
