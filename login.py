@@ -21,7 +21,7 @@ def download_and_extract_instantclient():
 
     # Unzip the file
     with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-        zip_ref.extractall(".main/instantclient")
+        zip_ref.extractall(".JIPB2024/instantclient")
 
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
