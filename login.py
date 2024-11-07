@@ -4,9 +4,8 @@ import zipfile
 import streamlit as st
 
 def download_and_extract_instantclient():
-    url = "https://www.dropbox.com/scl/fi/8yxm7lqu30zkh3dr9cpxa/instantclient112.zip?rlkey=71pwxm8ng785vlrlfm30ifia4&st=drfoarfd&dl=0
-"
-    local_filename = "instantclient112.zip"
+    url = "https://www.dropbox.com/scl/fi/8yxm7lqu30zkh3dr9cpxa/instantclient112.zip?rlkey=71pwxm8ng785vlrlfm30ifia4&st=drfoarfd&dl=0"
+    local_filename = "instantclient.zip"
 
     # Download the file
     urllib.request.urlretrieve(url, local_filename)
