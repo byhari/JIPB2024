@@ -1,4 +1,3 @@
-from sqlalchemy import create_engine
 import oracledb
 import streamlit as st
 import cx_Oracle
