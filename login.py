@@ -2,6 +2,7 @@ import os
 import zipfile
 import requests
 import streamlit as st
+import oracledb
 
 def download_and_extract_instantclient():
     url = "https://www.dropbox.com/scl/fi/6dqakb7wsij6rd4gcyf7s/instantclient-basic-linux.x64-21.14.0.0.0dbru.zip?rlkey=tiedrddjkvtcxutng5vppvixq&st=sxdyp357&dl=1"
