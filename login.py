@@ -5,7 +5,7 @@ import streamlit as st
 import oracledb
 
 def download_and_extract_instantclient():
-    url = "https://www.dropbox.com/scl/fi/iku0oiavnkby3t00dz9ag/instantclient_11_2.zip?rlkey=ndkt5j7d7an1wthnhytxkh58o&st=iu14g0sq&dl=1"
+    url = "https://www.dropbox.com/scl/fi/1s7me50wgi14tso9zmjrz/instantclient_12_1.zip?rlkey=8rmbxrshjn6r44j898c1hiai1&st=sdslt96n&dl=1"
     local_filename = "instantclient_11_2.zip"
 
     # Download the file
