@@ -4,8 +4,8 @@ import requests
 import streamlit as st
 
 def download_and_extract_instantclient():
-    url = "https://www.dropbox.com/scl/fi/1s7me50wgi14tso9zmjrz/instantclient_12_1.zip?rlkey=8rmbxrshjn6r44j898c1hiai1&st=sdslt96n&dl=1"
-    local_filename = "instantclient_12_1.zip"
+    url = "https://www.dropbox.com/scl/fi/6dqakb7wsij6rd4gcyf7s/instantclient-basic-linux.x64-21.14.0.0.0dbru.zip?rlkey=tiedrddjkvtcxutng5vppvixq&st=sxdyp357&dl=1"
+    local_filename = "instantclient-basic-linux.x64-21.14.0.0.0dbru.zip"
 
     # Download the file
     with requests.get(url, stream=True) as r:
