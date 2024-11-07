@@ -27,7 +27,7 @@ def download_and_extract_instantclient():
 download_and_extract_instantclient()
 
 # Initialize the Oracle Client
-oracledb.init_oracle_client(lib_dir='.main/instantclient')
+oracledb.init_oracle_client(lib_dir='.JIPB2024/instantclient')
 
 # Your existing code
 def check_login(username, password):
