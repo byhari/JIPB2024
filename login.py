@@ -2,6 +2,7 @@ import os
 import urllib.request
 import zipfile
 import streamlit as st
+import oracledb  # Ensure oracledb is imported
 
 def download_and_extract_instantclient():
     url = "https://www.dropbox.com/scl/fi/8yxm7lqu30zkh3dr9cpxa/instantclient112.zip?rlkey=71pwxm8ng785vlrlfm30ifia4&st=drfoarfd&dl=1"
@@ -21,12 +22,17 @@ def download_and_extract_instantclient():
             zip_ref.extractall("./main")
     except zipfile.BadZipFile:
         st.error("The downloaded file is not a valid ZIP file.")
+        return
 
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
 
 # Initialize the Oracle Client
-oracledb.init_oracle_client(lib_dir='./main')
+try:
+    oracledb.init_oracle_client(lib_dir='./main')
+except oracledb.DatabaseError as e:
+    st.error(f"Failed to initialize Oracle Client: {e}")
+    st.stop()
 
 # Your existing database connection and login logic
 def check_login(username, password):
@@ -53,3 +59,39 @@ def check_login(username, password):
         else:
             st.error(f"An error occurred: {error.message}")
         return None
+
+# Initialize session state
+if 'page' not in st.session_state:
+    st.session_state['page'] = 'login'
+
+# Function to handle exit
+def handle_exit():
+    st.session_state.clear()
+    st.session_state['page'] = 'login'
+
+# Login Page
+if st.session_state['page'] == 'login':
+    st.title('Login Page')
+
+    username = st.text_input('Username', key='username').upper()
+    password = st.text_input('Password', type='password', key='password').upper()
+
+    if st.button('OK', key='login_ok_button'):
+        if not username or not password:
+            st.error('Please login first!')
+        else:
+            result = check_login(username, password)
+            if result is None:
+                st.error('Login failed, user name or password not match')
+            else:
+                role_code, user_active, user_code, vc_username = result
+                if user_active == 'N':
+                    st.error('Login failed, user is not active')
+                else:
+                    st.success('Login success')
+                    st.session_state['user_code'] = user_code
+                    st.session_state['vc_username'] = vc_username
+                    st.session_state['page'] = 'jipb'
+
+if st.button('EXIT', key='exit_button'):
+    handle_exit()
