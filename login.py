@@ -21,7 +21,7 @@ def download_and_extract_instantclient():
     try:
         st.write("Extracting Oracle Instant Client...")
         with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-            zip_ref.extractall("./main")
+            zip_ref.extractall("./instantclient")
     except zipfile.BadZipFile:
         st.error("The downloaded file is not a valid ZIP file.")
         return
@@ -31,7 +31,7 @@ download_and_extract_instantclient()
 
 # Initialize the Oracle Client
 try:
-    oracledb.init_oracle_client(lib_dir='./main')
+    oracledb.init_oracle_client(lib_dir='./instantclient')
 except oracledb.DatabaseError as e:
     st.error(f"Failed to initialize Oracle Client: {e}")
     st.stop()
