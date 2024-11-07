@@ -26,13 +26,6 @@ def download_and_extract_instantclient():
         st.error("The downloaded file is not a valid ZIP file.")
         return
 
-    # Verify the extracted files
-    required_files = ["oci.dll", "oraociei11.dll"]
-    for file in required_files:
-        if not os.path.exists(os.path.join("./main", file)):
-            st.error(f"Required file {file} not found in extracted directory.")
-            return
-
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
 
