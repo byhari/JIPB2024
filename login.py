@@ -1,37 +1,13 @@
-import os
-import urllib.request
-import zipfile
-import streamlit as st
 import oracledb
+import streamlit as st
 
 def download_and_extract_instantclient():
-    url = "https://www.dropbox.com/scl/fi/o4sg5r085s8orij99mtei/instantclient_11_2.zip?rlkey=trsjz8q0sy0azrxu00qx3nkmh&st=l60crgh4&dl=1"
-    local_filename = "instantclient_11_2.zip"
-
-    # Download the file
-    st.write("Downloading Oracle Instant Client...")
-    urllib.request.urlretrieve(url, local_filename)
-
-    # Check if the file is downloaded correctly
-    if os.path.getsize(local_filename) < 100:  # Adjust the size check as needed
-        st.error("Downloaded file is too small, possibly an error page.")
-        return
-
-    # Unzip the file
-    try:
-        st.write("Extracting Oracle Instant Client...")
-        with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-            zip_ref.extractall("./main")
-    except zipfile.BadZipFile:
-        st.error("The downloaded file is not a valid ZIP file.")
-        return
-
-# Call the function to download and extract the Instant Client
-download_and_extract_instantclient()
+    # Assuming you have already downloaded and extracted the files manually
+    pass
 
 # Initialize the Oracle Client
 try:
-    oracledb.init_oracle_client(lib_dir='./main')
+    oracledb.init_oracle_client(lib_dir='/path/to/your/directory')  # Update the path as needed
 except oracledb.DatabaseError as e:
     st.error(f"Failed to initialize Oracle Client: {e}")
     st.stop()
