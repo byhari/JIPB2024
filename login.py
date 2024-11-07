@@ -6,7 +6,7 @@ import oracledb
 
 def download_and_extract_instantclient():
     url = "https://www.dropbox.com/scl/fi/1s7me50wgi14tso9zmjrz/instantclient_12_1.zip?rlkey=8rmbxrshjn6r44j898c1hiai1&st=sdslt96n&dl=1"
-    local_filename = "instantclient_11_2.zip"
+    local_filename = "instantclient_12_1.zip"
 
     # Download the file
     st.write("Downloading Oracle Instant Client...")
