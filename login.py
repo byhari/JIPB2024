@@ -26,6 +26,12 @@ def download_and_extract_instantclient():
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
 
+# Verify the contents of the directory
+print(os.listdir('./instantclient'))
+
+# Set environment variable
+os.environ['LD_LIBRARY_PATH'] = './instantclient'
+
 # Initialize the Oracle Client
 oracledb.init_oracle_client(lib_dir='./instantclient')
 
