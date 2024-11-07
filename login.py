@@ -5,12 +5,26 @@ import cx_Oracle
 import pyodbc
 import pandas as pd
 from datetime import datetime
+import os
+
+parts = ["oraociei11.dll.part1", "oraociei11.dll.part2", "oraociei11.dll.part3", "oraociei11.dll.part4", "oraociei11.dll.part5", "oraociei11.dll.part6", "oraociei11.dll.part7"]  # Add all parts here
+with open("largefile.zip", "wb") as outfile:
+    for part in parts:
+        with open(part, "rb") as infile:
+            outfile.write(infile.read())
+
+# Unzip the file if necessary
+import zipfile
+with zipfile.ZipFile("largefile.zip", 'r') as zip_ref:
+    zip_ref.extractall("./main")
+
+
 
 # Function to check login credentials
 def check_login(username, password):
     try:
         # Initialize the Oracle Client
-        oracledb.init_oracle_client(lib_dir=r"D:\Belajar\Python\002")  # Adjust the path as needed
+        oracledb.init_oracle_client(lib_dir=r"./main")  # Adjust the path as needed
         conn = oracledb.connect(user='fasdollar', password='fasdollar', dsn='172.25.1.83:1521/empdb01')
         cursor = conn.cursor()
         
