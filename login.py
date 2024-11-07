@@ -15,8 +15,8 @@ def download_and_extract_instantclient():
                 f.write(chunk)
 
     # Create the directory if it doesn't exist
-    if not os.path.exists("./instantclient"):
-        os.makedirs("./instantclient")
+    #if not os.path.exists("./instantclient"):
+    #    os.makedirs("./instantclient")
 
     # Unzip the file
     with zipfile.ZipFile(local_filename, 'r') as zip_ref:
