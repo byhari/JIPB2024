@@ -1,22 +1,27 @@
 import os
-import requests
+import urllib.request
 import zipfile
 import streamlit as st
 
 def download_and_extract_instantclient():
-    url = "https://www.dropbox.com/home/Personal/jipb/instantclient112.zip"
+    url = "https://www.dropbox.com/scl/fi/8yxm7lqu30zkh3dr9cpxa/instantclient112.zip?rlkey=71pwxm8ng785vlrlfm30ifia4&st=drfoarfd&dl=0
+"
     local_filename = "instantclient112.zip"
 
     # Download the file
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        with open(local_filename, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                f.write(chunk)
+    urllib.request.urlretrieve(url, local_filename)
+
+    # Check if the file is downloaded correctly
+    if os.path.getsize(local_filename) < 100:  # Adjust the size check as needed
+        st.error("Downloaded file is too small, possibly an error page.")
+        return
 
     # Unzip the file
-    with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-        zip_ref.extractall("./main")
+    try:
+        with zipfile.ZipFile(local_filename, 'r') as zip_ref:
+            zip_ref.extractall("./main")
+    except zipfile.BadZipFile:
+        st.error("The downloaded file is not a valid ZIP file.")
 
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
