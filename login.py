@@ -21,13 +21,23 @@ def download_and_extract_instantclient():
 
     # Unzip the file
     with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-        zip_ref.extractall("./instantclient")
+        for member in zip_ref.namelist():
+            filename = os.path.basename(member)
+            # Skip directories
+            if not filename:
+                continue
+            # Copy file (taken from zipfile's extract)
+            source = zip_ref.open(member)
+            target = open(os.path.join("./instantclient", filename), "wb")
+            with source, target:
+                target.write(source.read())
+
+    # Verify the contents of the directory
+    extracted_files = os.listdir('./instantclient')
+    st.write("Extracted files:", extracted_files)
 
 # Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
-
-# Verify the contents of the directory
-print(os.listdir('./instantclient'))
 
 # Set environment variable
 os.environ['LD_LIBRARY_PATH'] = './instantclient'
@@ -60,3 +70,13 @@ def check_login(username, password):
         else:
             st.error(f"An error occurred: {error.message}")
         return None
+
+# Example usage of the check_login function
+username = st.text_input("Username")
+password = st.text_input("Password", type="password")
+if st.button("Login"):
+    result = check_login(username, password)
+    if result:
+        st.success("Login successful!")
+    else:
+        st.error("Login failed!")
