@@ -40,10 +40,16 @@ def download_and_extract_instantclient():
 download_and_extract_instantclient()
 
 # Set environment variable
-os.environ['LD_LIBRARY_PATH'] = './instantclient'
+os.environ['LD_LIBRARY_PATH'] = os.path.abspath('./instantclient')
+
+# Verify environment variable
+st.write("LD_LIBRARY_PATH:", os.environ.get('LD_LIBRARY_PATH'))
+
+# Check file permissions
+st.write("Permissions for instantclient:", os.access('./instantclient', os.R_OK))
 
 # Initialize the Oracle Client
-oracledb.init_oracle_client(lib_dir='./instantclient')
+oracledb.init_oracle_client(lib_dir=os.path.abspath('./instantclient'))
 
 # Your existing code
 def check_login(username, password):
