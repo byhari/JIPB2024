@@ -3,6 +3,19 @@ import zipfile
 import requests
 import streamlit as st
 import oracledb
+import ctypes
+
+def check_libaio():
+    try:
+        # Attempt to load the libaio library
+        libaio = ctypes.CDLL('libaio.so.1')
+        st.write("libaio is installed and accessible.")
+    except OSError as e:
+        st.error(f"libaio is not accessible: {e}")
+
+# Call the function to check libaio
+check_libaio()
+
 
 def download_and_extract_instantclient():
     url = "https://www.dropbox.com/scl/fi/iwhmrp2yxnnckrq9gzt2b/instantclient_12_2.zip?rlkey=u2b6zeglubgg849fbyqqw8796&st=d9mr3m84&dl=1"
