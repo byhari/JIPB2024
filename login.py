@@ -18,7 +18,7 @@ check_libaio()
 
 
 def download_and_extract_instantclient():
-    url = "https://www.dropbox.com/scl/fi/iwhmrp2yxnnckrq9gzt2b/instantclient_12_2.zip?rlkey=u2b6zeglubgg849fbyqqw8796&st=d9mr3m84&dl=1"
+    url = "https://www.dropbox.com/scl/fi/3to8vnel6xuuq32wf6nuw/instantclient_12_2.zip?rlkey=v4clodbdr69igevmnrastr3kj&st=yo8xvxnr&dl=1"
     local_filename = "instantclient_12_2.zip"
 
     # Delete the existing file if it exists
