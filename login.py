@@ -5,8 +5,8 @@ import streamlit as st
 import oracledb
 
 def download_and_extract_instantclient():
-    url = "https://www.dropbox.com/scl/fi/tqr760sjzvs5ca09c0cvy/instantclient-basic-linux.x64-12.2.0.1.0.zip?rlkey=71h9r8gchb8iaouuqatdwg236&st=5wjpuka2&dl=1"
-    local_filename = "instantclient-basic-linux.x64-12.2.0.1.0.zip"
+    url = "https://www.dropbox.com/scl/fi/iwhmrp2yxnnckrq9gzt2b/instantclient_12_2.zip?rlkey=u2b6zeglubgg849fbyqqw8796&st=d9mr3m84&dl=1"
+    local_filename = "instantclient_12_2.zip"
 
     # Delete the existing file if it exists
     if os.path.exists(local_filename):
@@ -55,7 +55,7 @@ os.environ['LD_LIBRARY_PATH'] = os.path.abspath('./instantclient')
 st.write("LD_LIBRARY_PATH:", os.environ.get('LD_LIBRARY_PATH'))
 
 # Check file permissions
-st.write("Permissions for instantclient:", os.access('./instantclient', os.R_OK))
+st.write("Permissions for instantclient:", os.access('./instantclient/libclntsh.so', os.R_OK))
 
 # Initialize the Oracle Client
 oracledb.init_oracle_client(lib_dir=os.path.abspath('./instantclient'))
