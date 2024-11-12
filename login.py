@@ -7,73 +7,53 @@ import ctypes
 
 def check_libaio():
     try:
-        # Attempt to load the libaio library
         libaio = ctypes.CDLL('libaio.so.1')
         st.write("libaio is installed and accessible.")
     except OSError as e:
         st.error(f"libaio is not accessible: {e}")
 
-# Call the function to check libaio
 check_libaio()
-
 
 def download_and_extract_instantclient():
     url = "https://1drv.ms/u/s!AgqCqAEgOZhNgk42oU0fVNPIVXYd?embed=1"
     local_filename = "instantclient-basic-linux.x64-23.zip"
 
-    # Delete the existing file if it exists
     if os.path.exists(local_filename):
         os.remove(local_filename)
 
-    # Download the file
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
         with open(local_filename, 'wb') as f:
             for chunk in r.iter_content(chunk_size=8192):
                 f.write(chunk)
 
-    # Verify the downloaded file
     if not zipfile.is_zipfile(local_filename):
         st.error("Downloaded file is not a valid zip file.")
         return
 
-    # Create the directory if it doesn't exist
     if not os.path.exists("./instantclient"):
         os.makedirs("./instantclient")
 
-    # Unzip the file
     with zipfile.ZipFile(local_filename, 'r') as zip_ref:
-        for member in zip_ref.namelist():
-            filename = os.path.basename(member)
-            # Skip directories
-            if not filename:
-                continue
-            # Copy file (taken from zipfile's extract)
-            source = zip_ref.open(member)
-            target = open(os.path.join("./instantclient", filename), "wb")
-            with source, target:
-                target.write(source.read())
+        zip_ref.extractall("./instantclient")
 
-    # Verify the contents of the directory
     extracted_files = os.listdir('./instantclient')
     st.write("Extracted files:", extracted_files)
 
-# Call the function to download and extract the Instant Client
 download_and_extract_instantclient()
 
-# Set environment variable
 os.environ['LD_LIBRARY_PATH'] = os.path.abspath('./instantclient')
-
-# Verify environment variable
 st.write("LD_LIBRARY_PATH:", os.environ.get('LD_LIBRARY_PATH'))
 
-# Check file permissions
+# Set correct permissions
+for root, dirs, files in os.walk('./instantclient'):
+    for file in files:
+        os.chmod(os.path.join(root, file), 0o755)
+
 st.write("Permissions for instantclient:", os.access('./instantclient/libclntsh.so', os.R_OK))
 
-# Initialize the Oracle Client
 oracledb.init_oracle_client(lib_dir=os.path.abspath('./instantclient'))
 
-# Your existing code
 def check_login(username, password):
     try:
         conn = oracledb.connect(user='fasdollar', password='fasdollar', dsn='172.25.1.83:1521/empdb01')
@@ -99,7 +79,6 @@ def check_login(username, password):
             st.error(f"An error occurred: {error.message}")
         return None
 
-# Example usage of the check_login function
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
 if st.button("Login"):
