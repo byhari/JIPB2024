@@ -42,6 +42,12 @@ def download_and_extract_instantclient():
 
 download_and_extract_instantclient()
 
+# Verify the presence of libclntsh.so
+if os.path.exists('./instantclient/libclntsh.so'):
+    st.write("libclntsh.so found in instantclient directory.")
+else:
+    st.error("libclntsh.so not found in instantclient directory.")
+
 os.environ['LD_LIBRARY_PATH'] = os.path.abspath('./instantclient')
 st.write("LD_LIBRARY_PATH:", os.environ.get('LD_LIBRARY_PATH'))
 
@@ -50,9 +56,17 @@ for root, dirs, files in os.walk('./instantclient'):
     for file in files:
         os.chmod(os.path.join(root, file), 0o755)
 
-st.write("Permissions for instantclient:", os.access('./instantclient/libclntsh.so', os.R_OK))
+# Verify permissions
+if os.access('./instantclient/libclntsh.so', os.R_OK):
+    st.write("Permissions for libclntsh.so are set correctly.")
+else:
+    st.error("Permissions for libclntsh.so are not set correctly.")
 
-oracledb.init_oracle_client(lib_dir=os.path.abspath('./instantclient'))
+try:
+    oracledb.init_oracle_client(lib_dir=os.path.abspath('./instantclient'))
+    st.write("Oracle client initialized successfully.")
+except oracledb.DatabaseError as e:
+    st.error(f"Failed to initialize Oracle client: {e}")
 
 def check_login(username, password):
     try:
