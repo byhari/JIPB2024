@@ -4,6 +4,7 @@ import requests
 import streamlit as st
 import oracledb
 import ctypes
+import subprocess
 
 def check_libaio():
     try:
@@ -70,6 +71,16 @@ if os.access(libclntsh_path, os.R_OK):
     st.write("Permissions for libclntsh.so are set correctly.")
 else:
     st.error("Permissions for libclntsh.so are not set correctly.")
+
+# Check for missing dependencies
+def check_dependencies(lib_path):
+    result = subprocess.run(['ldd', lib_path], capture_output=True, text=True)
+    st.write(f"Dependencies for {lib_path}:\n{result.stdout}")
+    if result.returncode != 0:
+        st.error(f"Error checking dependencies for {lib_path}:\n{result.stderr}")
+
+check_dependencies(libclntsh_path)
+check_dependencies('./instantclient/libnnz21.so')
 
 try:
     oracledb.init_oracle_client(lib_dir=os.path.abspath('./instantclient'))
