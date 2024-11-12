@@ -18,8 +18,8 @@ check_libaio()
 
 
 def download_and_extract_instantclient():
-    url = "https://www.dropbox.com/scl/fi/3to8vnel6xuuq32wf6nuw/instantclient_12_2.zip?rlkey=v4clodbdr69igevmnrastr3kj&st=yo8xvxnr&dl=1"
-    local_filename = "instantclient_12_2.zip"
+    url = "https://1drv.ms/u/s!AgqCqAEgOZhNgk42oU0fVNPIVXYd?embed=1"
+    local_filename = "instantclient-basic-linux.x64-23.zip"
 
     # Delete the existing file if it exists
     if os.path.exists(local_filename):
