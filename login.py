@@ -40,12 +40,19 @@ def download_and_extract_instantclient():
     extracted_files = os.listdir('./instantclient')
     st.write("Extracted files:", extracted_files)
 
-    # Rename libclntsh.so.21.1 to libclntsh.so if necessary
+    # Rename or create symbolic links for necessary files
     libclntsh_versions = [f for f in extracted_files if f.startswith('libclntsh.so')]
     if 'libclntsh.so' not in libclntsh_versions:
         for version in libclntsh_versions:
             os.symlink(os.path.join('./instantclient', version), os.path.join('./instantclient', 'libclntsh.so'))
             st.write(f"Created symbolic link for {version} as libclntsh.so")
+
+    # Ensure libnnz21.so is present
+    libnnz_path = './instantclient/libnnz21.so'
+    if not os.path.exists(libnnz_path):
+        st.error("libnnz21.so not found in instantclient directory.")
+    else:
+        st.write("libnnz21.so found in instantclient directory.")
 
 download_and_extract_instantclient()
 
