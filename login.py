@@ -15,7 +15,7 @@ def check_libaio():
 check_libaio()
 
 def download_and_extract_instantclient():
-    url = "https://1drv.ms/u/s!AgqCqAEgOZhNgk42oU0fVNPIVXYd?embed=1"
+    url = "https://drive.google.com/uc?export=download&id=1DUE_RRp9UVkwiL0mhqrgP8eNmCaCLJ7O"
     local_filename = "instantclient-basic-linux.x64-23.zip"
 
     if os.path.exists(local_filename):
