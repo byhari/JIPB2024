@@ -40,13 +40,14 @@ def download_and_extract_instantclient():
     extracted_files = os.listdir('./instantclient')
     st.write("Extracted files:", extracted_files)
 
-download_and_extract_instantclient()
+    # Rename libclntsh.so.21.1 to libclntsh.so if necessary
+    libclntsh_versions = [f for f in extracted_files if f.startswith('libclntsh.so')]
+    if 'libclntsh.so' not in libclntsh_versions:
+        for version in libclntsh_versions:
+            os.symlink(os.path.join('./instantclient', version), os.path.join('./instantclient', 'libclntsh.so'))
+            st.write(f"Created symbolic link for {version} as libclntsh.so")
 
-# Verify the presence of libclntsh.so
-if os.path.exists('./instantclient/libclntsh.so'):
-    st.write("libclntsh.so found in instantclient directory.")
-else:
-    st.error("libclntsh.so not found in instantclient directory.")
+download_and_extract_instantclient()
 
 os.environ['LD_LIBRARY_PATH'] = os.path.abspath('./instantclient')
 st.write("LD_LIBRARY_PATH:", os.environ.get('LD_LIBRARY_PATH'))
@@ -57,7 +58,8 @@ for root, dirs, files in os.walk('./instantclient'):
         os.chmod(os.path.join(root, file), 0o755)
 
 # Verify permissions
-if os.access('./instantclient/libclntsh.so', os.R_OK):
+libclntsh_path = './instantclient/libclntsh.so'
+if os.access(libclntsh_path, os.R_OK):
     st.write("Permissions for libclntsh.so are set correctly.")
 else:
     st.error("Permissions for libclntsh.so are not set correctly.")
