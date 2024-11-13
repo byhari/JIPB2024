@@ -40,6 +40,10 @@ def download_and_extract_instantclient():
     extracted_files = os.listdir('./instantclient')
     st.write("Extracted files:", extracted_files)
 
+    st.write(f"Checking if libnnz21.so exists: {os.path.exists('./instantclient/libnnz21.so')}")
+    st.write(f"Checking if libclntsh.so exists: {os.path.exists('./instantclient/libclntsh.so')}")
+
+
     # Rename or create symbolic links for necessary files
     libclntsh_versions = [f for f in extracted_files if f.startswith('libclntsh.so')]
     if 'libclntsh.so' not in libclntsh_versions:
